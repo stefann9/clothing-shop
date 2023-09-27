@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 // https://firebase.google.com/docs/auth/web/google-signin?authuser=0 --> Authenticate Using Google
 // https://firebase.google.com/docs/firestore/quickstart?authuser=0 --> Get started with Cloud Firestore
 
@@ -26,3 +26,10 @@ export const auth = getAuth();
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore();
+export const createUserDocumentFromAuth = async (userAuth) => {
+  const userDocRef = doc(db, "users", userAuth.uid);
+  // console.log(userDocRef);
+  const userSnapshot = await getDoc(userDocRef);
+  console.log(userSnapshot)
+  console.log(userSnapshot.exists())
+};
