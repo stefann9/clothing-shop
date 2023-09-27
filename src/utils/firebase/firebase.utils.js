@@ -1,7 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
 // https://firebase.google.com/docs/auth/web/google-signin?authuser=0 --> Authenticate Using Google
+// https://firebase.google.com/docs/firestore/quickstart?authuser=0 --> Get started with Cloud Firestore
+
 const firebaseConfig = {
   apiKey: "",
   authDomain: "",
@@ -21,3 +23,6 @@ provider.setCustomParameters({
 
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const auth = getAuth();
+
+// Initialize Cloud Firestore and get a reference to the service
+export const db = getFirestore();
