@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signInWithRedirect,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 // https://firebase.google.com/docs/auth/web/google-signin?authuser=0 --> Authenticate Using Google
 // https://firebase.google.com/docs/firestore/quickstart?authuser=0 --> Get started with Cloud Firestore
@@ -27,7 +33,9 @@ export const auth = getAuth();
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
+  if (!userAuth) return;
+
   const userDocRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
 
@@ -39,10 +47,16 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         displayName,
         email,
         createdAt,
+        ...additionalInfo,
       });
     } catch (e) {
       console.log(e.message);
     }
   }
   return userDocRef;
+};
+
+export const createAuthWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
