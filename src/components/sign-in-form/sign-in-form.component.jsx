@@ -33,7 +33,12 @@ const SignInForm = () => {
       const { user } = await signInUserWithEmailAndPassword(email, password);
       resetFormFields();
       console.log(user);
-    } catch (e) {}
+    } catch (e) {
+      if(e.code === "auth/invalid-login-credentials" ){
+        alert("Invalid login credentials ")
+      }
+      console.log(e)
+    }
   };
 
   const signInWithGoogle = async () => {
