@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import {
@@ -15,6 +17,7 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
+  const { setCurrentUser } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -31,8 +34,8 @@ const SignInForm = () => {
     e.preventDefault();
     try {
       const { user } = await signInUserWithEmailAndPassword(email, password);
+      setCurrentUser(user);
       resetFormFields();
-      console.log(user);
     } catch (e) {
       if (e.code === "auth/invalid-login-credentials") alert("Invalid login credentials ");
       console.log(e);
