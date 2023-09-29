@@ -7,7 +7,7 @@ import {
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
-import "./sign-in-form.style.scss"
+import "./sign-in-form.style.scss";
 
 const defaultFormFields = {
   email: "",
@@ -34,16 +34,19 @@ const SignInForm = () => {
       resetFormFields();
       console.log(user);
     } catch (e) {
-      if(e.code === "auth/invalid-login-credentials" ){
-        alert("Invalid login credentials ")
-      }
-      console.log(e)
+      if (e.code === "auth/invalid-login-credentials") alert("Invalid login credentials ");
+      console.log(e);
     }
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    try {
+      const { user } = await signInWithGooglePopup();
+      await createUserDocumentFromAuth(user);
+    } catch (e) {
+      if (e.code === "auth/popup-closed-by-user") console.log("Sign in failed");
+      console.log(e);
+    }
   };
 
   return (
