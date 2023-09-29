@@ -1,7 +1,10 @@
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
 import { Link, Outlet } from "react-router-dom";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
-import "./navigation.style.scss"
+import "./navigation.style.scss";
 const Navigation = () => {
+  const { currentUser } = useContext(UserContext);
   return (
     <>
       <nav className="navigation">
@@ -12,9 +15,15 @@ const Navigation = () => {
           <Link className="nav-link" to="/shop">
             SHOP
           </Link>
-          <Link className="nav-link" to="/auth">
-            SIGN IN
-          </Link>
+          {currentUser ? (
+            <Link className="nav-link" to="/auth">
+              SIGN OUT
+            </Link>
+          ) : (
+            <Link className="nav-link" to="/auth">
+              SIGN IN
+            </Link>
+          )}
         </div>
       </nav>
       <Outlet />
