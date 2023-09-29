@@ -41,8 +41,7 @@ const SignInForm = () => {
 
   const signInWithGoogle = async () => {
     try {
-      const { user } = await signInWithGooglePopup();
-      await createUserDocumentFromAuth(user);
+      await signInWithGooglePopup();
     } catch (e) {
       if (e.code === "auth/popup-closed-by-user") console.log("Sign in failed");
       console.log(e);
