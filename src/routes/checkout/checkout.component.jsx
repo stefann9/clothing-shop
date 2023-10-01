@@ -1,8 +1,14 @@
+import { useContext } from "react";
+import { CartContext } from "../../contexts/cart.context";
+import CheckoutItem from "../../components/checkout-item/checkout-item";
 const Checkout = () => {
+  const { cartItems } = useContext(CartContext);
 
   return (
     <div className="checkout-container">
-      <h1>Checkout page</h1>
+      {cartItems.map((item) => (
+        <CheckoutItem key={item.id} cartItem={item} />
+      ))}
     </div>
   );
 };
