@@ -4,8 +4,9 @@ import { CartContext } from "../../contexts/cart.context";
 const CheckoutItem = ({ cartItem }) => {
   const { imageUrl, name, price, quantity } = cartItem;
 
-  const { addItemsToCart } = useContext(CartContext);
+  const { addItemsToCart, totalRemoveItemFromCart } = useContext(CartContext);
   const addItemHandler = () => addItemsToCart(cartItem);
+  const totalRemoveItemHandler = () => totalRemoveItemFromCart(cartItem);
 
   return (
     <div className="checkout-item-container">
@@ -17,7 +18,9 @@ const CheckoutItem = ({ cartItem }) => {
         <button onClick={addItemHandler}>{">"}</button>
       </span>
       <span className="price">{price}</span>
-      <button className="remove">x</button>
+      <button className="remove" onClick={totalRemoveItemHandler}>
+        x
+      </button>
     </div>
   );
 };
