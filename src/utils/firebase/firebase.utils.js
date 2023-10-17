@@ -9,7 +9,16 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 // https://firebase.google.com/docs/auth/web/google-signin?authuser=0 --> Authenticate Using Google
 // https://firebase.google.com/docs/firestore/quickstart?authuser=0 --> Get started with Cloud Firestore
 
@@ -45,7 +54,20 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
     batch.set(docRef, object);
   });
   await batch.commit();
-  console.log("Done")
+  console.log("Done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+  const querySnapShot = await getDocs(q);
+
+  const categoryMap = querySnapShot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
 };
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
