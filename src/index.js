@@ -6,10 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 
 // import { UserProvider } from "./contexts/user.context";
+// import { CategoriesProvider } from "./contexts/categories.context";
+// import { CartProvider } from "./contexts/cart.context";
 import App from "./App";
 import "./index.scss";
-// import { CategoriesProvider } from "./contexts/categories.context";
-import { CartProvider } from "./contexts/cart.context";
 
 import { store } from "./store/store";
 
@@ -21,9 +21,9 @@ root.render(
       <BrowserRouter>
         {/* <UserProvider> */}
           {/* <CategoriesProvider> */}
-            <CartProvider>
+            {/* <CartProvider> */}
               <App />
-            </CartProvider>
+            {/* </CartProvider> */}
           {/* </CategoriesProvider> */}
         {/* </UserProvider> */}
       </BrowserRouter>
