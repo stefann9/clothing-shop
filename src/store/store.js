@@ -1,9 +1,11 @@
 import { compose, createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
-import { loggerMiddleware } from "./middleware/logger";
-import { rootReducer } from "./root-reducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { thunk } from "redux-thunk";
+// import logger from "redux-logger";
+// import { loggerMiddleware } from "./middleware/logger";
+import { rootReducer } from "./root-reducer";
+import logger from "redux-logger";
 
 const persistConfig = {
   key: "root",
@@ -13,8 +15,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// const middleWares = [logger];
-const middleWares = [process.env.NODE_ENV === "development" && loggerMiddleware].filter(Boolean);
+const middleWares = [process.env.NODE_ENV === "development" && logger, thunk].filter(Boolean);
 
 const composeEngancer =
   (process.env.NODE_ENV === "development" &&
