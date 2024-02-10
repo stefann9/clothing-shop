@@ -9,6 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+
 import {
   getFirestore,
   doc,
@@ -62,7 +63,7 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
   const querySnapShot = await getDocs(q);
 
-  return querySnapShot.docs.map((docSnapshot) => docSnapshot.data())
+  return querySnapShot.docs.map((docSnapshot) => docSnapshot.data());
   // .reduce((acc, docSnapshot) => {
   //   const { title, items } = docSnapshot.data();
   //   acc[title.toLowerCase()] = items;
@@ -91,7 +92,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
       console.log(e.message);
     }
   }
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthWithEmailAndPassword = async (email, password) => {
@@ -107,3 +108,16 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((res, rej) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe();
+        res(user);
+      },
+      rej
+    );
+  });
+};

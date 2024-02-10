@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
-import {
-  signInUserWithEmailAndPassword,
-  signInWithGooglePopup,
-  createUserDocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
+// import {
+//   signInUserWithEmailAndPassword,
+//   signInWithGooglePopup,
+//   createUserDocumentFromAuth,
+// } from "../../utils/firebase/firebase.utils";
 
 import { ButtonsContainer, SignInContainer } from "./sign-in-form.style";
+import { emailSignInStart, googleSignInStart } from "../../store/user/user.action";
 
 const defaultFormFields = {
   email: "",
@@ -18,6 +20,7 @@ const defaultFormFields = {
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+  const dispatch = useDispatch();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -31,7 +34,8 @@ const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { user } = await signInUserWithEmailAndPassword(email, password);
+      // const { user } = await signInUserWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email,password));
       resetFormFields();
     } catch (e) {
       if (e.code === "auth/invalid-login-credentials") alert("Invalid login credentials ");
@@ -40,12 +44,13 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    try {
-      await signInWithGooglePopup();
-    } catch (e) {
-      if (e.code === "auth/popup-closed-by-user") console.log("Sign in failed");
-      console.log(e);
-    }
+    dispatch(googleSignInStart());
+    // try {
+    //   await signInWithGooglePopup();
+    // } catch (e) {
+    //   if (e.code === "auth/popup-closed-by-user") console.log("Sign in failed");
+    //   console.log(e);
+    // }
   };
 
   return (
